@@ -74,6 +74,10 @@ INSERT INTO Membre (CodeMembre, Civilite_membre, Nom_membre, Prenom_membre) VALU
 
 INSERT INTO Recette (CodeRecette, Titre_recette, Date_creation, CodeAuteur, CodeDifficulte, CodeCategorie) VALUES ('RCT00001', 'Tarte aux cerises', '2024-12-13', 'MB00001', '2', 'C007');
 
+INSERT INTO Recette (CodeRecette, Titre_recette, Date_creation, CodeAuteur, CodeDifficulte, CodeCategorie) VALUES ('RCT00002', 'Tarte aux pommes', '2024-12-14', 'MB00003', '2', 'C006');
+
+INSERT INTO Recette (CodeRecette, Titre_recette, Date_creation, CodeAuteur, CodeDifficulte, CodeCategorie) VALUES ('RCT00003', 'Steak au chocolat', '2024-12-14', 'MB00002', '3', 'C003');
+
 INSERT INTO Noter (CodeMembre, CodeRecette, Date_notation, Note, Commentaire) VALUES ('MB00002', 'RCT00001', '2024-12-14', 15, 'Tsara fa saingy tsy ampy siramamy'),
                                                                                      ('MB00003', 'RCT00001', '2024-12-14', 18, 'Hafa be ny tsirony misy anle cerises'),
                                                                                      ('MB00004', 'RCT00001', '2024-12-14', 14, 'Tsara be fa tsy ampy'),
@@ -82,6 +86,11 @@ INSERT INTO Noter (CodeMembre, CodeRecette, Date_notation, Note, Commentaire) VA
 INSERT INTO Membre (CodeMembre, Civilite_membre, Nom_membre, Prenom_membre) VALUES ('MB00005', 'Mme', 'Rakotonirina', 'Domoina'),
                                                                                    ('MB00006', 'Mme', 'Rakotonirina', 'Manda'),
                                                                                    ('MB00007', 'Mme', 'Rakotonirina', 'Fanilo');
+
+INSERT INTO Noter (CodeMembre, CodeRecette, Date_notation, Note, Commentaire) VALUES ('MB00002', 'RCT00002', '2024-12-14', 18, 'Tsara be'),
+                                                                                     ('MB00001', 'RCT00002', '2024-12-14', 17, 'Mahafinaritra'),
+                                                                                     ('MB00004', 'RCT00002', '2024-12-14', 17, 'Tsara'),
+                                                                                     ('MB00005', 'RCT00002', '2024-12-14', 16, 'Hafa mintsy');
 
 
 INSERT INTO Groupe (CodeGroupe, Libelle_groupe) VALUES ('G01', 'Cuisinier'),
@@ -105,6 +114,8 @@ INSERT INTO Categorie (CodeCategorie, Libelle_categorie, CodeGroupe) VALUES ('C0
                                                                             ('C012', 'Jambon', 'G06'),
                                                                             ('C013', 'Salami', 'G06'),
                                                                             ('C014', 'Saucisson', 'G06');
+
+INSERT INTO Unite VALUES ('04', 'gramme');
 
 --Mission 1 a/--
 SELECT
@@ -148,10 +159,34 @@ JOIN Categorie c on c.CodeGroupe = g.CodeGroupe
 GROUP BY g.CodeGroupe, g.Libelle_groupe;
 
 
--- e/ --
+--Mission 1 e/ --
+SELECT 
+m.Nom_membre,
+m.Prenom_membre,
+avg(n.Note) as Moyenne
+FROM Noter n
+JOIN Recette r on r.CodeRecette = n.CodeRecette
+JOIN Membre m on m.CodeMembre = r.CodeAuteur
+GROUP BY m.Nom_membre, m.Prenom_membre;
 
--- f/ --
+/* */
+SELECT
+m.Nom_membre,
+m.Prenom_membre,
+avg(n.Note) as Moyenne
+FROM Noter n
+JOIN Membre m on m.CodeMembre = n.CodeMembre
+GROUP BY m.Nom_membre, m.Prenom_membre;
 
--- g/ --
+--Mission 1 f/ --
+DELETE FROM Recette where Titre_recette = 'Steak au chocolat';
 
--- h/ --
+
+--Mission 1 g/ --
+UPDATE Membre
+SET Civilite_membre = 'Mme', Prenom_membre = 'Leroux-Kernach'
+WHERE Civilite_membre = 'Mlle' AND Nom_membre = 'Martine' AND Prenom_membre = 'Leroux';
+
+
+--Mission 1 h/ --
+INSERT INTO Ingredient (CodeIngredient, Libelle_ingredient, CodeUnite) VALUES ('IG0124', 'topinambour', 04);
